@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 /**
  * @Mojo( name = "autoconfig")
  * @goal autoconfig
- * @phase generate-resources
  */
 public class Temp2FileMojo extends AbstractMojo {
 
