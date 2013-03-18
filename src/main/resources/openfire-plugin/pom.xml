@@ -10,6 +10,12 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<app.class.dir>${basedir}/target/classes</app.class.dir>
+		<app.webapp.dir>${basedir}/src/main/webapp</app.webapp.dir>
+		<jspc.packegt.root>openfire.jsp.${project.name}</jspc.packegt.root>
+		<jspc.webXml.file>${basedir}/src/main/webapp/WEB-INF/web.xml</jspc.webXml.file>
+		<jspc.webXmlFragment.file>${basedir}/target/webfrag.xml</jspc.webXmlFragment.file>
+		<jspc.web-custom.xml.file>${basedir}/target/web.xml</jspc.web-custom.xml.file>
 	</properties>
 	
 	<dependencies>
@@ -19,4 +25,52 @@
 			<version>3.7.1</version>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-jspc-plugin</artifactId>
+				<version>6.1.26</version>
+				<executions>
+					<execution>
+						<id>jspc</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>jspc</goal>
+						</goals>
+						<configuration><!-- ${project.build.outputDirectory} -->
+							<classesDirectory> ${app.class.dir}
+							</classesDirectory>
+							<webAppSourceDirectory> ${app.webapp.dir} </webAppSourceDirectory>
+							<generatedClasses> ${app.class.dir} </generatedClasses>
+							<keepSources>false</keepSources>
+							<packageRoot>${jspc.packegt.root}</packageRoot>
+							<verbose>true</verbose>
+							<webXml>${jspc.webXml.file}</webXml>
+							<mergeFragment>true</mergeFragment>
+							<webXmlFragment>${jspc.webXmlFragment.file}</webXmlFragment>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>net.yanrc.openfire</groupId>
+				<artifactId>maven-plugin-openfire</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>openfire-plugin</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<excludes>index.jsp</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
